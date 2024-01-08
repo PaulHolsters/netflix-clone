@@ -75,9 +75,6 @@ const listsAreUnique = function (list) {
         console.log(err)
     })
 })*/
-filmSchema.post('find',function(next){
-    console.log(this._collection.collection.collection)
-})
 
 /*****************************************************************   models  ************************************************************************************/
 const filmModel = mongoose.model('Film', filmSchema)

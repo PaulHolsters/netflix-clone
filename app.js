@@ -51,6 +51,7 @@ app.use(multer({storage:fileStorage, fileFilter:fileFilter}).single('image'))
 const filmRoutes = require('./routes/films')
 const mijnLijstRoutes = require('./routes/mijnLijst')
 const personenRoutes = require('./routes/personen')
+const accountRoutes = require('./routes/accounts')
 
 app.use(((req, res, next) => {
     res.header('Access-Control-Allow-Origin','*')
@@ -66,6 +67,7 @@ app.use(((req, res, next) => {
 app.use('/films',filmRoutes)
 app.use('/mijn-lijst',mijnLijstRoutes)
 app.use('/personen',personenRoutes)
+app.use('/accounts',accountRoutes)
 
 // handle all non-defined requests
 // todo de return value trekt hier op niets
