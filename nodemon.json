@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MONGO_ATLAS_PW": "HPD0uH749NYINTyn",
+    "MONGO_ATLAS_USER": "ph",
+    "MONGO_ATLAS_DB": "@administry-1.nnow2.mongodb.net/netflix-clone?retryWrites=true&w=majority"
+  }
+}
