@@ -11,16 +11,22 @@ router.put('/add/:id/:contentId', async(req, res, next) => {
                     account:req.params.id,
                     films:[req.params.contentId],
                     series:[]
-                }).then(res=>{
-                    // todo zend oorspronkeijke film terug
+                }).then(result=>{
+                    film._doc['isInList']=true
+                    res.status(201).json(
+                        {
+                            data:film
+                        }
+                    )
                 })
             } else{
                 const newArrOfFilms = lijst.films.map(el=>el.toString())
                 newArrOfFilms.push(req.params.contentId)
                 Schema.mijnLijstModel.findOneAndUpdate({account:req.params.id},{films:newArrOfFilms}).then(result=>{
                     // todo zend oorspronkeijke film terug
+                    film._doc['isInList']=true
                     res.status(201).json({
-                        data:result
+                        data:film
                     })
             })
         }}).catch(err => {
