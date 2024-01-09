@@ -7,7 +7,7 @@ router.get('/', (req, res, next) => {
             .populate('acteurs.persoonId',{naam:1}).then(result => {
             res.status(200).json(
                 {
-                    films: result
+                    data: result
                 }
             )
         }).catch(err => {

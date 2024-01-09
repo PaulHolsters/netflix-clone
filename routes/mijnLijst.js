@@ -19,7 +19,7 @@ router.put('/add/:id/:contentId', async(req, res, next) => {
                 console.log(newArrOfFilms)
                 Schema.mijnLijstModel.findOneAndUpdate({account:req.params.id},{films:newArrOfFilms}).then(result=>{
                     res.status(201).json({
-                        doc:result
+                        data:result
                     })
             })
         }}).catch(err => {
@@ -40,11 +40,10 @@ router.put('/remove/:id/:contentId', (req, res, next) => {
         let arrOfFilms = [...doc.films.map(el=>el.toString())]
         if(doc['films'] && arrOfFilms.includes(contentId)){
             arrOfFilms.splice(arrOfFilms.indexOf(contentId),1)
-            console.log(arrOfFilms)
             Schema.mijnLijstModel.findOneAndUpdate({account:accountId},
                 {films:arrOfFilms}).then(result=>{
                  res.status(201).json({
-                     doc:result
+                     data:result
                  })
             })
         } else if(doc.hasOwnProperty('series') && doc.series.includes(contentId.toString())){

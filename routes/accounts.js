@@ -4,7 +4,7 @@ const Schema = require('../models/Account')
 router.get('/:id', (req, res, next) => {
     Schema.accountModel.findOne({_id:req.params.id}).then(result => {
         res.status(201).json({
-            res:result
+            data:result
         })
     }).catch(err => {
         res.status(500).json({
