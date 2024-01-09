@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const Schema = require('../models/MijnLijst')
 const SchemaFilm = require('../models/Film')
-
 router.put('/add/:id/:contentId', async(req, res, next) => {
     const film =  await SchemaFilm.filmModel.findById(req.params.contentId)
     if(film){
@@ -12,12 +11,14 @@ router.put('/add/:id/:contentId', async(req, res, next) => {
                     account:req.params.id,
                     films:[req.params.contentId],
                     series:[]
+                }).then(res=>{
+                    // todo zend oorspronkeijke film terug
                 })
             } else{
                 const newArrOfFilms = lijst.films.map(el=>el.toString())
                 newArrOfFilms.push(req.params.contentId)
-                console.log(newArrOfFilms)
                 Schema.mijnLijstModel.findOneAndUpdate({account:req.params.id},{films:newArrOfFilms}).then(result=>{
+                    // todo zend oorspronkeijke film terug
                     res.status(201).json({
                         data:result
                     })
@@ -42,13 +43,16 @@ router.put('/remove/:id/:contentId', (req, res, next) => {
             arrOfFilms.splice(arrOfFilms.indexOf(contentId),1)
             Schema.mijnLijstModel.findOneAndUpdate({account:accountId},
                 {films:arrOfFilms}).then(result=>{
+                // todo zend oorspronkeijke film terug
                  res.status(201).json({
                      data:result
                  })
             })
         } else if(doc.hasOwnProperty('series') && doc.series.includes(contentId.toString())){
             Schema.mijnLijstModel.findOneAndUpdate({account:accountId},
-                {series:doc.series.splice(doc.series.indexOf(contentId.toString()),1)})
+                {series:doc.series.splice(doc.series.indexOf(contentId.toString()),1)}).then(res=>{
+                // todo zend oorspronkeijke film terug
+            })
         }
     }).catch(err => {
         res.status(500).json({
