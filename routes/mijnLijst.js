@@ -22,8 +22,8 @@ router.put('/add/:id/:contentId', async(req, res, next) => {
             } else{
                 const newArrOfFilms = lijst.films.map(el=>el.toString())
                 newArrOfFilms.push(req.params.contentId)
-                Schema.mijnLijstModel.findOneAndUpdate({account:req.params.id},{films:newArrOfFilms}).then(result=>{
-                    // todo zend oorspronkeijke film terug
+                Schema.mijnLijstModel.findOneAndUpdate({account:req.params.id},
+                    {films:newArrOfFilms}).then(result=>{
                     film._doc['isInList']=true
                     res.status(201).json({
                         data:film
@@ -40,24 +40,29 @@ router.put('/add/:id/:contentId', async(req, res, next) => {
     }
 })
 
-router.put('/remove/:id/:contentId', (req, res, next) => {
+router.put('/remove/:id/:contentId', async(req, res, next) => {
     const accountId = req.params.id
     const contentId = req.params.contentId
+    const film =  await SchemaFilm.filmModel.findById(req.params.contentId)
     Schema.mijnLijstModel.findOne({account:accountId}).then(doc=>{
         let arrOfFilms = [...doc.films.map(el=>el.toString())]
         if(doc['films'] && arrOfFilms.includes(contentId)){
             arrOfFilms.splice(arrOfFilms.indexOf(contentId),1)
             Schema.mijnLijstModel.findOneAndUpdate({account:accountId},
                 {films:arrOfFilms}).then(result=>{
-                // todo zend oorspronkeijke film terug
+                film._doc['isInList']=false
                  res.status(201).json({
-                     data:result
+                     data:film
                  })
             })
         } else if(doc.hasOwnProperty('series') && doc.series.includes(contentId.toString())){
             Schema.mijnLijstModel.findOneAndUpdate({account:accountId},
-                {series:doc.series.splice(doc.series.indexOf(contentId.toString()),1)}).then(res=>{
-                // todo zend oorspronkeijke film terug
+                {series:doc.series.splice(doc.series.indexOf(contentId.toString()),1)})
+                .then(result=>{
+                    film._doc['isInList']=false
+                    res.status(201).json({
+                        data:film
+                    })
             })
         }
     }).catch(err => {
